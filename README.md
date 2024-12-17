@@ -1,45 +1,86 @@
-# Digital-VLSI-SoC-design-and-planning
-# Sky130 Day-1
+![Group 1](https://github.com/user-attachments/assets/0d6fd73e-3dce-4c6f-8512-2c401be07d78)
+
+# Sky130 Day 1 - Inception of Open source EDA,OpenLane and Sky130PDK
 ## Introduction to QFN-48 Package,chips,pads,die, and core
 
-The QFN-48 (Quad Flat No-lead, 48 pins) package is a compact, surface-mount integrated circuit package widely used in modern electronic devices due to its low-profile design and efficient heat dissipation. Measuring typically around 7mm x 7mm with a height of about 0.9mm, the QFN-48 package is designed to save space on printed circuit boards (PCBs). Unlike traditional leaded packages, the QFN-48 does not have leads extending from its sides, which helps to minimize its footprint and improve electrical performance.
+The **QFN-48** (*Quad Flat No-lead, 48 pins*) package is a compact, surface-mount integrated circuit package widely used in modern electronic devices due to its low-profile design and efficient heat dissipation.
+
+Measuring typically around **7mm x 7mm** with a height of about **0.9mm**, the QFN-48 package is designed to save space on printed circuit boards (PCBs). 
+
+Unlike traditional leaded packages, the QFN-48 does not have leads extending from its sides, which helps to **minimize its footprint** and **improve electrical performance**.
 
 ![S1](https://github.com/Arnav-12/VLSI-SoC-Design/blob/main/Screenshots%20vsd/S1.png)
 
-The pads on a QFN-48 package play a crucial role in establishing electrical connections between the chip and the PCB. These pads are located on the bottom of the package and are usually made of copper, plated with a thin layer of tin or gold to ensure reliable soldering. The pads are divided into peripheral pads, which are arranged around the perimeter for signal and power connections, and a larger thermal pad in the center. The thermal pad is primarily used for heat dissipation and often also serves as an electrical ground. This design helps manage heat more effectively, which is critical for maintaining the performance and longevity of the chip.
+The **pads** on a QFN-48 package play a crucial role in establishing electrical connections between the chip and the PCB. These pads are located on the **bottom of the package** and are usually made of **copper**, plated with a thin layer of **tin** or **gold** to ensure reliable soldering. 
+
+The pads are divided into:
+- **Peripheral Pads**: Arranged around the perimeter for signal and power connections.
+- **Thermal Pad**: A larger pad located in the center, primarily used for **heat dissipation** and often serving as an **electrical ground**.
+
+This design helps manage heat more effectively, which is critical for maintaining the **performance** and **longevity** of the chip.
 
 ![S2](https://github.com/Arnav-12/VLSI-SoC-Design/blob/main/Screenshots%20vsd/S2.png)
-At the heart of the QFN-48 package lies the core, the central part of the semiconductor die where the main circuitry is located. The core contains active and passive components, including transistors, resistors, capacitors, and interconnects, which collectively perform the chip's intended functions. The core's design is crucial for the chip's performance, as it dictates how efficiently the chip processes signals and performs computations.
 
-The die, a small piece of silicon wafer, contains the integrated circuit and is the fundamental building block of the chip. The die is fabricated through processes like photolithography and etching to create the intricate circuits necessary for the chip's functionality. Once the die is completed, it is mounted onto the lead frame or substrate within the QFN-48 package. Connections between the die and the pads are made using bond wires or advanced methods like flip-chip bonding, ensuring reliable electrical pathways for signal transmission.
+At the **heart of the QFN-48 package** lies the **core**, the central part of the semiconductor die where the main circuitry is located. The core contains **active and passive components**, including transistors, resistors, capacitors, and interconnects, which collectively perform the chip's intended functions. The **core's design** is crucial for the chip's performance, as it dictates how efficiently the chip processes signals and performs computations.
 
-Intellectual Properties (IPs) are essential components of modern chip design, providing pre-designed and pre-verified blocks of logic or functions that can be integrated into the chip. IPs come in various forms, such as hard IPs, which are fixed layouts integrated directly into the silicon, and soft IPs, which are synthesizable RTL (Register Transfer Level) code that can be customized. Examples of IPs include processors, memory controllers, interfaces like USB and Ethernet, analog components like ADCs and DACs, and various other functional blocks. By incorporating IPs, designers can speed up the development process, reduce costs, and ensure the reliability of the chip by reusing proven components.
+The **die**, a small piece of silicon wafer, contains the integrated circuit and is the fundamental building block of the chip. The die is fabricated through processes like **photolithography** and **etching** to create the intricate circuits necessary for the chip's functionality. Once the die is completed, it is mounted onto the **lead frame** or **substrate** within the QFN-48 package. Connections between the die and the pads are made using **bond wires** or advanced methods like **flip-chip bonding**, ensuring reliable electrical pathways for signal transmission.
+
+**Intellectual Properties (IPs)** are essential components of modern chip design, providing **pre-designed** and **pre-verified** blocks of logic or functions that can be integrated into the chip. IPs come in various forms:
+- **Hard IPs**: Fixed layouts integrated directly into the silicon.
+- **Soft IPs**: Synthesizable RTL (Register Transfer Level) code that can be customized.
+
+Examples of IPs include:
+- Processors
+- Memory controllers
+- Interfaces like **USB** and **Ethernet**
+- Analog components like **ADCs** (Analog-to-Digital Converters) and **DACs** (Digital-to-Analog Converters)
+- Various other functional blocks
+
+By incorporating **IPs**, designers can **speed up development**, **reduce costs**, and ensure the **reliability** of the chip by reusing proven components.
+
 
 ## Introduction to RISC-V
 
-RISC-V (Reduced Instruction Set Computing, Version 5) is an open, free, and extensible instruction set architecture (ISA) that is rapidly gaining popularity in the field of computer architecture. Developed at the University of California, Berkeley, RISC-V aims to provide a standardized and streamlined ISA that can be used for a wide range of applications, from small embedded systems to large-scale data centers. Its open nature means that anyone can use, modify, and extend the ISA without licensing fees, fostering innovation and collaboration across the industry.
+**RISC-V** (*Reduced Instruction Set Computing, Version 5*) is an **open, free, and extensible instruction set architecture (ISA)** that is rapidly gaining popularity in the field of computer architecture. Developed at the **University of California, Berkeley**, RISC-V aims to provide a **standardized** and **streamlined ISA** that can be used for a wide range of applications, from **small embedded systems** to **large-scale data centers**.
+
+Its **open nature** means that anyone can **use**, **modify**, and **extend** the ISA without licensing fees, fostering **innovation** and **collaboration** across the industry.
+
 ![S3](https://github.com/Arnav-12/VLSI-SoC-Design/blob/main/S3.png)
 
 ## From Software Application to Hardware
-Here we get to know ,how software and hardware interacts
+The **below diagrams** show how **application software**, **system software**, and **hardware** interact.
+
 ![S4](https://github.com/Arnav-12/VLSI-SoC-Design/blob/main/S4.png)
 
 ## Digital ASIC Design
 
-The journey from Electronic Design Automation (EDA) tools to an Application-Specific Integrated Circuit (ASIC) involves several key stages. EDA tools, such as schematic capture software, are used to create detailed circuit diagrams, while simulation tools like SPICE for analog and ModelSim for digital designs verify the functionality of these circuits. Synthesis tools, such as Synopsys Design Compiler, then convert high-level RTL (Register Transfer Level) code into a gate-level netlist. Following this, Place and Route (P&R) tools, like Cadence Innovus or Synopsys IC Compiler, are used to physically layout the circuit on the chip, ensuring optimal performance and area efficiency.
+The journey from **Electronic Design Automation (EDA)** tools to an **Application-Specific Integrated Circuit (ASIC)** involves several key stages:
+- **EDA tools**, such as **schematic capture software**, are used to create detailed circuit diagrams.
+- **Simulation tools**, like **SPICE** for analog designs and **ModelSim** for digital designs, verify the functionality of these circuits.
+- **Synthesis tools**, such as **Synopsys Design Compiler**, convert high-level **RTL (Register Transfer Level)** code into a gate-level netlist.
+- Finally, **Place and Route (P&R)** tools, like **Cadence Innovus** or **Synopsys IC Compiler**, are used to physically layout the circuit on the chip, ensuring **optimal performance** and **area efficiency**.
 
 ![S5](https://github.com/Arnav-12/VLSI-SoC-Design/blob/main/S5.png)
 
 ## Simplified RTL2GDS flow
 
-The RTL2GDS flow, transforming a high-level Register Transfer Level (RTL) design into a final GDSII (Graphic Data System II) format, is streamlined through several stages. Initially, RTL code written in hardware description languages like Verilog or VHDL is synthesized into a gate-level netlist using synthesis tools. This netlist, representing the logical structure of the circuit, undergoes Design-for-Test (DFT) enhancements to facilitate post-production testing. The design is then processed through Place and Route (P&R) tools, arranging the netlist components and routing interconnections on the silicon. Subsequent stages involve timing analysis, signal integrity checks, and power optimization to ensure the design meets all performance criteria. Finally, the completed layout is verified against the original design specifications before being exported in the GDSII format, ready for fabrication.
+The **RTL2GDS** flow, transforming a high-level **Register Transfer Level (RTL)** design into a final **GDSII** (*Graphic Data System II*) format, is streamlined through several stages:
 
+1. **Synthesis**: RTL code written in hardware description languages like **Verilog** or **VHDL** is synthesized into a **gate-level netlist** using synthesis tools.
+2. **Design-for-Test (DFT)**: Enhancements are applied to facilitate post-production testing.
+3. **Place and Route (P&R)**: Tools like **Cadence Innovus** or **Synopsys IC Compiler** arrange the netlist components and route interconnections on the silicon.
+4. **Timing Analysis and Optimization**: Includes **timing analysis**, **signal integrity checks**, and **power optimization** to ensure the design meets all performance criteria.
+5. **Layout Verification**: The completed layout is verified against the original design specifications.
+6. **Export to GDSII**: The final design is exported in the **GDSII format**, ready for fabrication.
+   
 ![S6](https://github.com/Arnav-12/VLSI-SoC-Design/blob/main/S6.png)
 
 ## Strive Chipsets
+
 ![S7](https://github.com/Arnav-12/VLSI-SoC-Design/blob/main/S7.png)
 
 ## OpenLANE Design Flow
+
 ![S8](https://github.com/Arnav-12/VLSI-SoC-Design/blob/main/S8.png)
 
 # Day-1 Labs
@@ -67,3 +108,15 @@ The RTL2GDS flow, transforming a high-level Register Transfer Level (RTL) design
 ![s18(cells are stacked over each other)](https://github.com/user-attachments/assets/c0384d5a-8ebd-4515-9959-4d3bb731c06f)
 ![s19](https://github.com/user-attachments/assets/ee7317ce-8f3b-4782-902c-79216bcaae02)
 ![s20](https://github.com/user-attachments/assets/d3f0ef44-ff43-4bd4-b063-1b57d03cf7d1)
+![s21](https://github.com/user-attachments/assets/5219cacb-d97a-4ebb-93a3-0ff0778706a9)
+![s22](https://github.com/user-attachments/assets/d571d16c-1a06-40fe-a793-f8c9318c8016)
+![s23(rise time)](https://github.com/user-attachments/assets/3bbf8810-881a-448b-80cc-bd314d601262)
+![s24(cell rise delay)](https://github.com/user-attachments/assets/8655e6db-d217-4c4a-a90b-44e4e72c9e27)
+![s25(prop delay)](https://github.com/user-attachments/assets/c0309ff5-3b99-4a8e-add5-11c2f5475398)
+![s26(magicrc file)](https://github.com/user-attachments/assets/99a39c08-f978-4271-8df5-33a16d6287df)
+![s27](https://github.com/user-attachments/assets/a53058b3-444b-4395-86d1-e7b4488af608)
+![s28](https://github.com/user-attachments/assets/f65addec-e6ba-4a8a-8968-07600cc168f1)
+![s30](https://github.com/user-attachments/assets/75b9ae3f-884a-4925-b095-89ae41a1af8b)
+![s31](https://github.com/user-attachments/assets/a30934d7-9be6-4fb7-8937-87d0ace28087)
+![s32](https://github.com/user-attachments/assets/af16fac8-cd6b-4d14-ad75-7dbc8ea6bb92)
+![s33](https://github.com/user-attachments/assets/9e7eda47-3cc0-4d4f-aff9-0af54553f7f4)
