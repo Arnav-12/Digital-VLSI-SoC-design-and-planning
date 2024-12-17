@@ -41,3 +41,29 @@ The RTL2GDS flow, transforming a high-level Register Transfer Level (RTL) design
 
 ## OpenLANE Design Flow
 ![S8](https://github.com/Arnav-12/VLSI-SoC-Design/blob/main/S8.png)
+
+# Day-1 Labs
+![s1](https://github.com/user-attachments/assets/29398ddc-9ee8-4061-b0ef-3be9fbc132fc)
+![s2](https://github.com/user-attachments/assets/723517d7-ef56-472f-beed-413c45e37e91)
+![s3](https://github.com/user-attachments/assets/83181aa4-8db7-4544-af69-1a4f086ed8a8)
+![s4](https://github.com/user-attachments/assets/882a633c-86c5-4698-b3e2-7284457b7ba5)
+![s5](https://github.com/user-attachments/assets/059fd3ae-9be4-43ff-8053-e37c1a8c9d3a)
+![s6](https://github.com/user-attachments/assets/27ccee7c-4b5e-47ad-a5d8-440e88888dee)
+![s7](https://github.com/user-attachments/assets/50570253-b051-4781-b1e3-69b867c7e0a0)
+![s8](https://github.com/user-attachments/assets/d0776651-99b8-43d6-9f6c-5da04629b0e1)
+
+# Day-2 Labs
+![s9](https://github.com/user-attachments/assets/04af9ac6-9e9a-42c0-8401-6104283b81ec)
+![s10](https://github.com/user-attachments/assets/4ad7a631-4559-41f2-bd7b-9b0a49ec77bb)
+![s11](https://github.com/user-attachments/assets/ded786fd-632a-43c7-8f45-b011cb5385d0)
+![s12](https://github.com/user-attachments/assets/cde2d041-0c35-4cef-a282-a7f8b2cc144c)
+![s13](https://github.com/user-attachments/assets/a8d60f7b-265d-4f20-8efa-6e88b3f3bc30)
+![s14](https://github.com/user-attachments/assets/d2613a8e-e603-45ac-9f19-8e517c109573)
+
+# Day-3 Labs
+![s15](https://github.com/user-attachments/assets/d27d1498-79f5-46f8-ad0b-0e889b41675b)
+![s16(d3_lec1_1)](https://github.com/user-attachments/assets/b88a8595-e822-4e4e-bf84-cb8e248dc822)
+![s17(equidistant before setting variable)](https://github.com/user-attachments/assets/6f6fd5e3-b27b-477e-be4a-56a00250f278)
+![s18(cells are stacked over each other)](https://github.com/user-attachments/assets/c0384d5a-8ebd-4515-9959-4d3bb731c06f)
+![s19](https://github.com/user-attachments/assets/ee7317ce-8f3b-4782-902c-79216bcaae02)
+![s20](https://github.com/user-attachments/assets/d3f0ef44-ff43-4bd4-b063-1b57d03cf7d1)
