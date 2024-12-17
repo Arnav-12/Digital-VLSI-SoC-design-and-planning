@@ -315,14 +315,135 @@ Effective **Placement and Routing** is crucial for:
 
 ![s14](https://github.com/user-attachments/assets/d2613a8e-e603-45ac-9f19-8e517c109573)
 
-# Day-3 Labs
+# Sky130 Day 3 - Design library cell using Magic layout and ngspice characterization
+
+### **Magic**  
+**Magic** is an open-source VLSI layout editor used for designing and viewing chip layouts. It supports tasks such as creating, editing, and verifying physical layouts, and integrates well with tools like OpenLane for physical design workflows.
+
+### **Ngspice**  
+**Ngspice** is an open-source circuit simulator used for SPICE-based simulation of analog and mixed-signal circuits. It helps analyze circuit behavior, such as voltage, current, and timing characteristics, to ensure design accuracy.
+
 ![s15](https://github.com/user-attachments/assets/d27d1498-79f5-46f8-ad0b-0e889b41675b)
+
+The Pins in the below layout are equidistant
+
 ![s16(d3_lec1_1)](https://github.com/user-attachments/assets/b88a8595-e822-4e4e-bf84-cb8e248dc822)
+
+### **Setting FP_IO_MODE and Running Floorplan**
+
+To modify the **Input/Output (I/O) mode** for floorplanning, use the following command:
+
+```tcl
+set ::env(FP_IO_MODE) 2
+```
+
+- Here, `FP_IO_MODE` is an environment variable that defines the I/O pin placement mode during floorplanning.  
+   - `2` enables **automatic I/O pin placement**.  
+
+After setting the variable, run the floorplan step with:
+
+```tcl
+run_floorplan
+```
+
 ![s17(equidistant before setting variable)](https://github.com/user-attachments/assets/6f6fd5e3-b27b-477e-be4a-56a00250f278)
+
+Now cells are stacked over each other
+
 ![s18(cells are stacked over each other)](https://github.com/user-attachments/assets/c0384d5a-8ebd-4515-9959-4d3bb731c06f)
+
+### **Next Step: Clone the Required Repository**  
+
+To proceed, clone the following repository using the command:
+
+```bash
+git clone https://github.com/nickson-jose/vsdstdcelldesign.git
+```
+
+### **About the Repository**  
+This repository contains all the necessary information to **build and run the OpenLane flow**, which performs a full ASIC implementation from **RTL to GDSII**.  
+
+In addition, it includes:  
+- Procedures to create a **custom LEF file**.  
+- Steps to integrate the custom LEF file into the **OpenLane flow**.
+
+### **Opening Magic with sky130A.tech**
+
+To view the contents of `sky130A.tech` using Magic, use the following command:
+
+```bash
+magic -T sky130A.tech sky130_inv.mag &
+```
+
 ![s19](https://github.com/user-attachments/assets/ee7317ce-8f3b-4782-902c-79216bcaae02)
+
+### **16-Mask CMOS Process Steps**
+
+1. **Selecting a Substrate**  
+   Choose the substrate material (usually silicon) on which the entire process will be built.
+
+2. **Creating Active Regions for Transistors**  
+   Define the active regions where the transistors will be fabricated on the silicon substrate.
+
+3. **N-Well and P-Well Formation**  
+   Create the **N-Well** and **P-Well** regions, which form the foundation for the complementary transistors (NMOS and PMOS).
+
+4. **Formation of Gate**  
+   Deposit and pattern the **gate material** (usually polysilicon) to define the channel of the transistor.
+
+5. **Lightly Doped Drain (LDD) Formation**  
+   Perform a light doping process to create lightly doped regions in the source and drain areas to reduce short-channel effects.
+
+6. **Source-Drain Formation**  
+   Implant high concentrations of dopants to form the **source** and **drain** regions of the transistor.
+
+7. **Steps to Form Contact and Interconnects (Local)**  
+   Create **contacts** to the source, drain, and gate, followed by local interconnects to connect the transistors to each other and to the rest of the chip.
+
+8. **High-Level Metal Formation**  
+   Deposit and pattern higher metal layers (Metal 1, Metal 2, etc.) to connect different parts of the chip, completing the routing of signals and power.
+
+### **Creating a SPICE File for Ngspice**
+
+To generate a SPICE file that can be used with **Ngspice**, follow these steps in the **Tkcon** window:
+
+1. **Extract all netlist information**:
+   ```tcl
+   extract all
+   ```
+
+2. **Generate SPICE netlist with specified thresholds**:
+   ```tcl
+   ext2spice cthresh 0 rthresh 0
+   ```
+
+3. **Export the SPICE netlist**:
+   ```tcl
+   ext2spice
+   ```
 ![s20](https://github.com/user-attachments/assets/d3f0ef44-ff43-4bd4-b063-1b57d03cf7d1)
+
+### **Updating SPICE File with pshort.lib and nshort.lib**
+
+ **Modify the SPICE file** to include the required libraries. Add the following lines at the top of your SPICE file:
+
+   ```spice
+   .include ./libs/pshort.lib
+   .include ./libs/nshort.lib
+   ```
+
 ![s21](https://github.com/user-attachments/assets/5219cacb-d97a-4ebb-93a3-0ff0778706a9)
+
+### **Opening Ngspice for Simulation**
+
+To run the simulation using **Ngspice**, use the following command:
+
+```bash
+ngspice sky130_inv.spice
+```
+
+- This command will launch **Ngspice** and load the **sky130_inv.spice** netlist file for simulation.
+
 ![s22](https://github.com/user-attachments/assets/d571d16c-1a06-40fe-a793-f8c9318c8016)
 ![s23(rise time)](https://github.com/user-attachments/assets/3bbf8810-881a-448b-80cc-bd314d601262)
 ![s24(cell rise delay)](https://github.com/user-attachments/assets/8655e6db-d217-4c4a-a90b-44e4e72c9e27)
