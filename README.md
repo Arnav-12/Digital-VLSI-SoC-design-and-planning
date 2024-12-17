@@ -445,13 +445,109 @@ ngspice sky130_inv.spice
 - This command will launch **Ngspice** and load the **sky130_inv.spice** netlist file for simulation.
 
 ![s22](https://github.com/user-attachments/assets/d571d16c-1a06-40fe-a793-f8c9318c8016)
+## **Parameters to Characterize Using Sky130 Model Files**
+
+### **Rise Time**
+
+**Rise Time** is the amount of time it takes for a signal to transition from a low voltage level to a high voltage level, typically defined between 10% and 90% of the maximum value of the waveform.
+
+- **Formula**:  
+   ```math
+   \text{Rise Time} = x_0 - x_1
+   ```
+
+   The **Rise Time** is calculated as:  
+   ```math
+   \text{Rise Time} = 2.2396 \, \text{ns} - 2.1799 \, \text{ns} = 0.0597 \, \text{ns}
+   ```
 ![s23(rise time)](https://github.com/user-attachments/assets/3bbf8810-881a-448b-80cc-bd314d601262)
+
+### **Cell Rise Delay**
+
+**Cell Rise Delay** refers to the time it takes for a signal to transition from a low logic level (typically 0) to a high logic level (typically 1) at the output of a logic gate or cell. This delay is often measured at the output node when the input transitions from low to high.
+
+- **Formula**:  
+   ```math
+   \text{Cell Rise Delay} = t_{\text{high}} - t_{\text{low}}
+   ```
+
+   The **Cell Rise Delay** is calculated as:  
+   ```math
+   \text{Cell Rise Delay} = 2.20647 \, \text{ns} - 2.14941 \, \text{ns} = 0.05706 \, \text{ns}
+   ```
 ![s24(cell rise delay)](https://github.com/user-attachments/assets/8655e6db-d217-4c4a-a90b-44e4e72c9e27)
+
+### **Propagation Delay**
+
+**Propagation Delay** is the time taken for a signal to propagate through a logic gate or cell, from the moment the input changes to the moment the output changes. It is typically measured between 50% of the input signal and 50% of the output signal.
+
+- **Formula**:  
+   ```math
+   \text{Propagation Delay} = t_{\text{output}} - t_{\text{input}}
+   ```
+
+   The **Propagation Delay** is calculated as:  
+   ```math
+   \text{Propagation Delay} = 6.20766 \, \text{ns} - 6.15 \, \text{ns} = 0.05766 \, \text{ns}
+   ```
+
 ![s25(prop delay)](https://github.com/user-attachments/assets/c0309ff5-3b99-4a8e-add5-11c2f5475398)
+
+### **Downloading Lab Files**
+
+To download the lab files, use the following command:
+
+```bash
+wget http://opencircuitdesign.com/open_pdks/archive/drc_tests.tgz
+```
+
+### **Opening Magic Tool with Better Graphics**
+
+To launch the **Magic tool** with improved graphics, use the following command:
+
+```bash
+magic -d XR &
+```
+
+- The `-d XR` option ensures that Magic uses the **XR** display server for better graphical rendering.
+- The `&` runs the command in the background.
+
 ![s26(magicrc file)](https://github.com/user-attachments/assets/99a39c08-f978-4271-8df5-33a16d6287df)
+
+### **Opening the met3.mag File in Magic**
+
+To open the **met3.mag** file in **Magic**, follow these steps:
+
+1. Launch **Magic** by running the following command:
+   ```bash
+   magic -d XR &
+   ```
+
+2. In the **Magic** window, go to the **File** menu and select **Open**.
+
+3. Navigate to the location of the **met3.mag** file and open it.
+
+This will load the **met3.mag** layout file in Magic for viewing and editing.
+
 ![s27](https://github.com/user-attachments/assets/a53058b3-444b-4395-86d1-e7b4488af608)
+## **Lab Exercise to fix poly.9 error in Sky130 tech file**
+
+Poly Rules
+
+![Screenshot 2024-12-17 165550](https://github.com/user-attachments/assets/cbb59f60-960b-4ded-b28e-100d60e19b2b)
+
 ![s28](https://github.com/user-attachments/assets/f65addec-e6ba-4a8a-8968-07600cc168f1)
-![s30](https://github.com/user-attachments/assets/75b9ae3f-884a-4925-b095-89ae41a1af8b)
+
+After inseritng new commands to update drc below is the fixed drc
+
 ![s31](https://github.com/user-attachments/assets/a30934d7-9be6-4fb7-8937-87d0ace28087)
+
+N well Rules
+
+![Screenshot 2024-12-17 174918](https://github.com/user-attachments/assets/09b2ad90-cbcc-4384-a13f-5123186723e6)
+
 ![s32](https://github.com/user-attachments/assets/af16fac8-cd6b-4d14-ad75-7dbc8ea6bb92)
+
+After inserting new commands to sky130A.tech file 
+
 ![s33](https://github.com/user-attachments/assets/9e7eda47-3cc0-4d4f-aff9-0af54553f7f4)
