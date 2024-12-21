@@ -1144,3 +1144,7 @@ Screenshots of commands run and timing report generated
 ![s78](https://github.com/user-attachments/assets/6329f719-aba4-45b6-990f-a80674dca7e2)
 ![s79](https://github.com/user-attachments/assets/2fe4e190-9f80-4057-8b03-a502574d733d)
 ![s80](https://github.com/user-attachments/assets/095f8eff-147d-4773-bfab-890fc762c5e8)
+
+# Reference
+
+https://github.com/fayizferosh/soc-design-and-planning-nasscom-vsd.git
