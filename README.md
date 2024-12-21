@@ -445,6 +445,7 @@ ngspice sky130_inv.spice
 - This command will launch **Ngspice** and load the **sky130_inv.spice** netlist file for simulation.
 
 ![s22](https://github.com/user-attachments/assets/d571d16c-1a06-40fe-a793-f8c9318c8016)
+
 ## **Parameters to Characterize Using Sky130 Model Files**
 
 ### **Rise Time**
@@ -530,6 +531,7 @@ To open the **met3.mag** file in **Magic**, follow these steps:
 This will load the **met3.mag** layout file in Magic for viewing and editing.
 
 ![s27](https://github.com/user-attachments/assets/a53058b3-444b-4395-86d1-e7b4488af608)
+
 ## **Lab Exercise to fix poly.9 error in Sky130 tech file**
 
 Poly Rules
@@ -553,6 +555,7 @@ After inserting new commands to sky130A.tech file
 ![s33](https://github.com/user-attachments/assets/9e7eda47-3cc0-4d4f-aff9-0af54553f7f4)
 
 # Sky 130 Day 4- Pre Layout Timing Analysis and importance of good clock tree
+
 ## Convert grid info to track info
 The track information file plays a vital role in the physical design process by defining routing paths and layout constraints. It ensures efficient signal routing, prevents design rule violations, and optimizes resource utilization. By converting grid data to track data, it helps reduce congestion and enhances overall design performance. Additionally, it provides essential input for EDA tools to automate placement and routing effectively.
 
@@ -634,6 +637,7 @@ run_synthesis
 There is a slack 
 
 ![s40](https://github.com/user-attachments/assets/7e291843-221d-4ff0-af2e-f7afd8fcc303)
+
 ### Improving Timing Analysis in OpenLane
 
 ```tcl
@@ -783,6 +787,7 @@ run_synthesis
 These commands ensure that the design `picorv32a` is properly prepared, that newly added LEF files are included, and that synthesis is configured with optimized settings for sizing, fanout, and driving cells. 
 
 ![s51](https://github.com/user-attachments/assets/c251d14b-6345-4501-aa49-a2926d8f18eb)
+
 ### Basic Timing ECO (Engineering Change Order)
 
 **Basic Timing ECO** refers to a set of changes made to a design to meet its timing requirements after an initial timing analysis. It typically involves adjustments to the design, such as resizing cells, adding buffers, or changing placement, to fix timing violations such as setup or hold time errors.
@@ -843,6 +848,7 @@ replace_cell _14481_ sky130_fd_sc_hd__or4_4
 # Generating custom timing report
 report_checks -fields {net cap slew input_pins} -digits 4
 ```
+
 ![s59(slack reduced)](https://github.com/user-attachments/assets/80e6c411-de78-4124-ad42-d34c1d9ba2d8)
 
 Commands to verify instance _14506_ is replaced with sky130_fd_sc_hd__or4_4
