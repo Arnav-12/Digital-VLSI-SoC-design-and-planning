@@ -551,3 +551,554 @@ N well Rules
 After inserting new commands to sky130A.tech file 
 
 ![s33](https://github.com/user-attachments/assets/9e7eda47-3cc0-4d4f-aff9-0af54553f7f4)
+
+#Sky 130 Day 4- Pre Layout Timing Analysis and importance of good clock tree
+## Convert grid info to track info
+The track information file plays a vital role in the physical design process by defining routing paths and layout constraints. It ensures efficient signal routing, prevents design rule violations, and optimizes resource utilization. By converting grid data to track data, it helps reduce congestion and enhances overall design performance. Additionally, it provides essential input for EDA tools to automate placement and routing effectively.
+
+Below is the **track.info** file:-
+
+![s34](https://github.com/user-attachments/assets/a032ea44-7093-4bc6-b19b-00feb051b4bc)
+
+### Setting Grid File Values in TkCon
+
+To set grid file values in the TkCon window, use the following commands:
+
+1. **Check the `grid` Command Syntax**:
+   ```tcl
+   help grid
+   ```
+
+2. **Set Grid Values**:
+   Assign specific grid spacing values using:
+   ```tcl
+   grid 0.46um 0.34um 0.23um 0.17um
+   ```
+![s35](https://github.com/user-attachments/assets/4e43650a-7d01-49ae-9274-4bdccd43c079)
+![s36](https://github.com/user-attachments/assets/ba2fbda2-bb9f-484c-a7f5-cf58912c83ba)
+
+### Saving the Final Custom Cell in the `vsdstdcelldesign` Folder
+
+To save final custom cell in the **TkCon** window:
+
+1. **Command to Save the Layout**:
+   ```tcl
+   save sky130_vsdinv.mag
+   ```
+
+2. **Generate the LEF File**:
+   ```tcl
+   lef write
+   ```
+
+The screenshot below demonstrates the `sky130_vsdinv.mag` file saved in the `vsdstdcelldesign` folder.
+
+![s37](https://github.com/user-attachments/assets/e92d6298-19d2-4d73-8e5e-b7dace78c289)
+
+Newly Created **LEF** file
+
+![s38](https://github.com/user-attachments/assets/91ed6232-9f12-4800-a556-a390232585de)
+
+### Editing `config.tcl` to Add a Custom Cell into OpenLane
+
+```tcl
+set ::env(LIB_SYNTH) "$::env(OPENLANE_ROOT)/designs/picorv32a/src/sky130_fd_sc_hd__typical.lib"
+set ::env(LIB_FASTEST) "$::env(OPENLANE_ROOT)/designs/picorv32a/src/sky130_fd_sc_hd__fast.lib"
+set ::env(LIB_SLOWEST) "$::env(OPENLANE_ROOT)/designs/picorv32a/src/sky130_fd_sc_hd__slow.lib"
+set ::env(LIB_TYPICAL) "$::env(OPENLANE_ROOT)/designs/picorv32a/src/sky130_fd_sc_hd__typical.lib"
+
+set ::env(EXTRA_LEFS) [glob $::env(OPENLANE_ROOT)/designs/$::env(DESIGN_NAME)/src/*.lef]
+```
+
+### Running OpenLane Flow for the Design
+
+```bash
+# Enter the OpenLane flow in interactive mode
+./flow.tcl -interactive
+
+# Load the OpenLane package
+package require openlane 0.9
+
+# Prep the design for 'picorv32a'
+prep -design picorv32a -tag 18-12_00-40 -overwrite
+
+# Include newly added LEF files to the OpenLane flow
+set lefs [glob $::env(DESIGN_DIR)/src/*.lef]
+add_lefs -src $lefs
+
+# Run synthesis
+run_synthesis
+```
+![s39](https://github.com/user-attachments/assets/70b4bc15-3482-41a3-a1d5-4650ea8b5dac)
+There is a slack 
+![s40](https://github.com/user-attachments/assets/7e291843-221d-4ff0-af2e-f7afd8fcc303)
+### Improving Timing Analysis in OpenLane
+
+```tcl
+# Prep the design again to update variables
+prep -design picorv32a -tag 18-12_00-40 -overwrite
+
+# Include newly added LEF files to the OpenLane flow
+set lefs [glob $::env(DESIGN_DIR)/src/*.lef]
+add_lefs -src $lefs
+
+# Display current value of the SYNTH_STRATEGY variable
+echo $::env(SYNTH_STRATEGY)
+
+# Set a new value for SYNTH_STRATEGY
+set ::env(SYNTH_STRATEGY) "DELAY 3"
+
+# Display current value of SYNTH_BUFFERING to check whether it's enabled
+echo $::env(SYNTH_BUFFERING)
+
+# Display current value of SYNTH_SIZING
+echo $::env(SYNTH_SIZING)
+
+# Set a new value for SYNTH_SIZING
+set ::env(SYNTH_SIZING) 1
+
+# Display current value of SYNTH_DRIVING_CELL to check whether it's the proper cell
+echo $::env(SYNTH_DRIVING_CELL)
+
+# Run synthesis after applying all updates
+run_synthesis
+```
+
+![s44](https://github.com/user-attachments/assets/cd4a0fc3-c2da-40b7-bc61-ed11b1ed80f1)
+
+**merged.lef** file :-
+
+![s41](https://github.com/user-attachments/assets/a3aad78b-6865-49eb-ae8a-c247a39ab99f)
+
+### Introduction to Delay Tables and Their Usage
+
+Delay tables are crucial components in the timing analysis and optimization of digital circuits. They provide a systematic way to represent the delay characteristics of standard cells, interconnects, and other elements in a design. These tables map input signal transitions to output delays, helping designers understand how signals propagate through the circuit at various operating conditions, such as voltage, temperature, and load.
+
+In **OpenLane** and other EDA tools, delay tables are used to accurately model and simulate the timing behavior of a design during synthesis and optimization processes. They allow tools to predict the delay of paths and ensure that the design meets the required timing constraints.
+
+### Key Uses of Delay Tables:
+1. **Timing Analysis**: They provide essential data for static timing analysis, helping to ensure that all paths in the design meet setup and hold time requirements.
+2. **Optimization**: Delay tables are used during the optimization process to adjust cell sizing, buffering, and placement for better performance.
+3. **Design Validation**: They help verify that the design will function as expected under different environmental conditions, such as varying voltages or temperatures.
+4. **Accurate Simulation**: Delay tables enable more accurate simulation of signal propagation delays during verification and post-layout analysis.
+
+![Screenshot 2024-12-21 155945](https://github.com/user-attachments/assets/3158680b-3d95-44b6-99ba-93fcbd387601)
+
+### Handling `run_floorplan` Command Failure
+
+```tcl
+# Initialize the floorplan
+init_floorplan
+
+# Place IO cells in the design
+place_io
+
+# Add tap and decap cells for noise reduction and power stability
+tap_decap_or
+```
+
+![s45](https://github.com/user-attachments/assets/ebb451c5-2ffd-4e94-a54b-2dc94dec9da7)
+
+Screenshot of Placement def file in magic after successful floorplan and placement
+
+![s48(correct one)](https://github.com/user-attachments/assets/d7267bf1-0974-4300-8621-b70fa29ee027)
+
+Custom cell sky130_vsdinv is successfully placed
+
+![s49](https://github.com/user-attachments/assets/e85c6f93-9a12-4cc2-a43d-afa24191d5cc)
+
+### Command to View Internal Layers of Cells in TkCon Window
+
+To view the internal layers of cells in the TkCon window, use the following command:
+
+```tcl
+expand
+```
+
+![s50](https://github.com/user-attachments/assets/7fc0aaa4-e684-4d53-a8a9-070434257017)
+
+### Setup Timing Analysis, Clock Jitter, and Uncertainty
+
+**Setup Timing Analysis**:  
+Setup timing analysis ensures that data signals arrive at the flip-flop's input long enough before the clock edge to be reliably captured. It checks if the time between the data signal and the clock signal is sufficient to meet the setup time requirement of the flip-flop, ensuring correct data capture.
+
+**Clock Jitter**:  
+Clock jitter refers to small variations or deviations in the timing of the clock signal. These variations can cause fluctuations in the arrival time of the clock edge, potentially leading to setup and hold violations in sequential elements. Proper clock management is crucial to minimize jitter.
+
+**Uncertainty**:  
+Uncertainty in timing analysis refers to variations in signal arrival times caused by process variations, temperature fluctuations, or voltage changes. These uncertainties must be accounted for during design to ensure the circuit operates reliably across different operating conditions.
+
+**my_base.sdc** file :-
+
+![s52](https://github.com/user-attachments/assets/399bcc7d-5628-4376-97ba-47be1d7c7732)
+
+### Running STA (Static Timing Analysis) in OpenLane
+
+To run Static Timing Analysis (STA) using OpenLane, follow these steps:
+
+1. **Change Directory to OpenLane**:
+   Navigate to your OpenLane directory:
+   ```bash
+   cd Desktop/work/tools/openlane_working_dir/openlane
+   ```
+
+2. **Invoke OpenSTA Tool with Script**:
+   Run the STA tool using the configuration script `pre_sta.conf`:
+   ```bash
+   sta pre_sta.conf
+   ```
+   
+![s53](https://github.com/user-attachments/assets/a21b20e8-15e4-44fe-ab85-ce48c40e967f)
+
+Since more fanout is causing more delay we can add parameter to reduce fanout and do synthesis again
+
+### Preparing and Running Synthesis in OpenLane
+
+```tcl
+# Prep the design 'picorv32a' and create necessary files and directories
+prep -design picorv32a -tag 18-12_00-40 -overwrite
+
+# Include newly added LEF files to the OpenLane flow
+set lefs [glob $::env(DESIGN_DIR)/src/*.lef]
+add_lefs -src $lefs
+
+# Set a new value for SYNTH_SIZING to adjust cell sizing during synthesis
+set ::env(SYNTH_SIZING) 1
+
+# Set a new value for SYNTH_MAX_FANOUT to control maximum fanout during synthesis
+set ::env(SYNTH_MAX_FANOUT) 4
+
+# Display the current value of SYNTH_DRIVING_CELL to ensure the proper cell is being used
+echo $::env(SYNTH_DRIVING_CELL)
+
+# Run synthesis now that the design is prepped and variables are set
+run_synthesis
+```
+
+These commands ensure that the design `picorv32a` is properly prepared, that newly added LEF files are included, and that synthesis is configured with optimized settings for sizing, fanout, and driving cells. 
+
+![s51](https://github.com/user-attachments/assets/c251d14b-6345-4501-aa49-a2926d8f18eb)
+### Basic Timing ECO (Engineering Change Order)
+
+**Basic Timing ECO** refers to a set of changes made to a design to meet its timing requirements after an initial timing analysis. It typically involves adjustments to the design, such as resizing cells, adding buffers, or changing placement, to fix timing violations such as setup or hold time errors.
+
+**Why it is Done**:  
+Timing ECO is essential to ensure that the design meets the required performance specifications, especially after synthesis or layout. If timing violations are detected during static timing analysis (STA), an ECO is performed to correct these issues and ensure that the design functions correctly under real-world conditions.
+
+![s54](https://github.com/user-attachments/assets/10e55f9a-57b2-4f01-b081-63c8692f28e2)
+
+Starting Slack
+
+![s55 (starting slack)](https://github.com/user-attachments/assets/3c88213e-1f8f-46bb-8a7f-ee5a4551fa8b)
+
+Commands to perform analysis and optimize timing by replacing with OR gate of drive strength 4
+
+```tcl
+# Reports all the connections to a net
+report_net -connections _11672_
+
+# Checking command syntax
+help replace_cell
+
+# Replacing cell
+replace_cell _14510_ sky130_fd_sc_hd__or3_4
+
+# Generating custom timing report
+report_checks -fields {net cap slew input_pins} -digits 4
+```
+
+![s56(slack reduced)](https://github.com/user-attachments/assets/32b26779-72cc-4779-921b-43d439977957)
+
+![s57](https://github.com/user-attachments/assets/7ff26137-5bca-4b3e-8b2e-aa3fc1ada745)
+
+Commands to perform analysis and optimize timing by replacing with OR gate of drive strength 4
+
+```tcl
+# Report all the connections to a specific net
+report_net -connections _11675_
+
+# Replace the existing cell with an OR gate (drive strength 4)
+replace_cell _14514_ sky130_fd_sc_hd__or3_4
+
+# Generate a custom timing report with specified fields and precision
+report_checks -fields {net cap slew input_pins} -digits 4
+```
+
+![s58(slack reduced)](https://github.com/user-attachments/assets/ae15941f-4fda-4f55-850c-ad398678881a)
+Commands to perform analysis and optimize timing by replacing with OR gate of drive strength 4
+
+```tcl
+# Reports all the connections to a net
+report_net -connections _11643_
+
+# Replacing cell
+replace_cell _14481_ sky130_fd_sc_hd__or4_4
+
+# Generating custom timing report
+report_checks -fields {net cap slew input_pins} -digits 4
+```
+![s59(slack reduced)](https://github.com/user-attachments/assets/80e6c411-de78-4124-ad42-d34c1d9ba2d8)
+
+Commands to verify instance _14506_ is replaced with sky130_fd_sc_hd__or4_4
+
+```tcl
+# Generating custom timing report
+report_checks -from _29043_ -to _30440_ -through _14506_
+```
+
+![s61](https://github.com/user-attachments/assets/ffdbbc45-a3ee-434a-b830-ff1fc3545972)
+
+Commands to perform analysis and optimize timing by replacing with OR gate of drive strength 4
+
+```tcl
+# Reports all the connections to a net
+report_net -connections _11668_
+
+# Replacing cell
+replace_cell _14506_ sky130_fd_sc_hd__or4_4
+
+# Generating custom timing report
+report_checks -fields {net cap slew input_pins} -digits 4
+```
+Starting value :- **36.63ns**
+Present value :- **35.3473**
+Reduced around = **36.63ns**-**35.3473** = **1.2827** violations
+
+![s60(slack reduced)](https://github.com/user-attachments/assets/712824dd-a76d-45f1-89b9-d1ef0281e9e6)
+
+Placement is done we are now ready to run cts:-
+```tcl
+run_cts
+```
+
+![s62](https://github.com/user-attachments/assets/050a9bfb-820d-446d-bd08-08614ad51d2d)
+
+### OpenROAD Timing Analysis in OpenLane After Changing `CTS_CLK_BUFFER_LIST`
+
+The following commands guide you through performing OpenROAD timing analysis after modifying the `CTS_CLK_BUFFER_LIST` in OpenLane:
+
+```tcl
+# Checking the current value of 'CTS_CLK_BUFFER_LIST'
+echo $::env(CTS_CLK_BUFFER_LIST)
+
+# Removing 'sky130_fd_sc_hd__clkbuf_1' from the list
+set ::env(CTS_CLK_BUFFER_LIST) [lreplace $::env(CTS_CLK_BUFFER_LIST) 0 0]
+
+# Checking the updated value of 'CTS_CLK_BUFFER_LIST'
+echo $::env(CTS_CLK_BUFFER_LIST)
+
+# Checking the current value of 'CURRENT_DEF'
+echo $::env(CURRENT_DEF)
+
+# Setting the DEF file as the placement definition
+set ::env(CURRENT_DEF) /openLANE_flow/designs/picorv32a/runs/24-03_10-03/results/placement/picorv32a.placement.def
+
+# Run Clock Tree Synthesis (CTS) again with the updated settings
+run_cts
+
+# Checking the updated value of 'CTS_CLK_BUFFER_LIST'
+echo $::env(CTS_CLK_BUFFER_LIST)
+
+# Launch OpenROAD for timing analysis
+openroad
+
+# Read the LEF file for the design
+read_lef /openLANE_flow/designs/picorv32a/runs/24-03_10-03/tmp/merged.lef
+
+# Read the DEF file after CTS
+read_def /openLANE_flow/designs/picorv32a/runs/24-03_10-03/results/cts/picorv32a.cts.def
+
+# Create an OpenROAD database for the design
+write_db pico_cts1.db
+
+# Load the created database in OpenROAD
+read_db pico_cts.db
+
+# Read the netlist after CTS
+read_verilog /openLANE_flow/designs/picorv32a/runs/24-03_10-03/results/synthesis/picorv32a.synthesis_cts.v
+
+# Read the Liberty file for the design
+read_liberty $::env(LIB_SYNTH_COMPLETE)
+
+# Link the design with the Liberty file
+link_design picorv32a
+
+# Read the custom SDC file for timing constraints
+read_sdc /openLANE_flow/designs/picorv32a/src/my_base.sdc
+
+# Set all clocks as propagated clocks
+set_propagated_clock [all_clocks]
+
+# Generate a custom timing report with min and max path delays
+report_checks -path_delay min_max -fields {slew trans net cap input_pins} -format full_clock_expanded -digits 4
+
+# Report hold skew for the design
+report_clock_skew -hold
+
+# Report setup skew for the design
+report_clock_skew -setup
+
+# Exit OpenROAD and return to OpenLane flow
+exit
+
+# Checking the current value of 'CTS_CLK_BUFFER_LIST' again
+echo $::env(CTS_CLK_BUFFER_LIST)
+
+# Inserting 'sky130_fd_sc_hd__clkbuf_1' back into the list
+set ::env(CTS_CLK_BUFFER_LIST) [linsert $::env(CTS_CLK_BUFFER_LIST) 0 sky130_fd_sc_hd__clkbuf_1]
+
+# Checking the updated value of 'CTS_CLK_BUFFER_LIST'
+echo $::env(CTS_CLK_BUFFER_LIST)
+```
+
+![s64](https://github.com/user-attachments/assets/3496398d-36df-4cf1-a6a7-1f6d31febe0f)
+![s65](https://github.com/user-attachments/assets/2cf313e6-7b4d-41b2-9d74-38e19d70d31b)
+![s66](https://github.com/user-attachments/assets/1ce577dd-1ce4-4a4f-8cfb-b0a4afc53883)
+![s67](https://github.com/user-attachments/assets/360bc4b5-df59-4085-b6a4-bda0ff50b6eb)
+![s68](https://github.com/user-attachments/assets/7a5bbd4b-8f54-42c9-b17d-cdc58a85f674)
+![s69](https://github.com/user-attachments/assets/8583492e-4fb9-466d-aea6-8b46d0c80030)
+![s70](https://github.com/user-attachments/assets/7c87d83a-5873-4354-8455-79a62838baf3)
+
+#Sky130 Day 5- Final steps for RTL2GDS using triton route and openSTA
+
+### Routing and Design Rule Check (DRC) in OpenLane
+
+**Routing**:  
+Routing in OpenLane refers to the process of connecting the various components of the design (cells, pins, and ports) using metal layers to establish the necessary electrical connections. The routing process ensures that signals are properly routed between the cells, and all connectivity requirements are met while adhering to design constraints like wire length, resistance, and capacitance.
+
+**Design Rule Check (DRC)**:  
+Design Rule Check (DRC) is a verification process that ensures the design meets the fabrication rules and physical constraints of the manufacturing process. DRC checks for errors such as rule violations (e.g., spacing, width, and overlap of metal layers) that could lead to manufacturing defects or performance issues. It ensures that the design is manufacturable and functions as expected in the real-world environment.
+
+### Maze Routing and Lee Algorithm
+
+**Maze Routing**:  
+Maze routing is a method used in VLSI design to find paths for routing signals between pins on a chip. It is inspired by solving a maze, where the goal is to navigate from a start point (source) to an endpoint (destination) while avoiding obstacles. The algorithm ensures that the routed paths do not overlap or violate design rules.
+
+**Lee Algorithm**:  
+The Lee algorithm is a specific maze-routing algorithm that uses breadth-first search (BFS) to find the shortest path between two points on a grid. It works by exploring all possible routes from the source in layers, expanding outward until it reaches the destination. The algorithm guarantees an optimal path without violating any connectivity or design rules, making it useful for interconnect routing in integrated circuit designs.
+
+![Screenshot 2024-12-21 174307](https://github.com/user-attachments/assets/caba5d36-a4aa-44fb-b878-d34e2d964747)
+## Power Distribution Network and Routing
+
+Commands to perform all necessary stages up until now
+```tcl
+# Now that we have entered the OpenLANE flow contained docker sub-system we can invoke the OpenLANE flow in the Interactive mode using the following command
+./flow.tcl -interactive
+
+# Now that OpenLANE flow is open we have to input the required packages for proper functionality of the OpenLANE flow
+package require openlane 0.9
+
+# Now the OpenLANE flow is ready to run any design and initially we have to prep the design creating some necessary files and directories for running a specific design which in our case is 'picorv32a'
+prep -design picorv32a
+
+# Addiitional commands to include newly added lef to openlane flow merged.lef
+set lefs [glob $::env(DESIGN_DIR)/src/*.lef]
+add_lefs -src $lefs
+
+# Command to set new value for SYNTH_STRATEGY
+set ::env(SYNTH_STRATEGY) "DELAY 3"
+
+# Command to set new value for SYNTH_SIZING
+set ::env(SYNTH_SIZING) 1
+
+# Now that the design is prepped and ready, we can run synthesis using following command
+run_synthesis
+
+# Following commands are alltogather sourced in "run_floorplan" command
+init_floorplan
+place_io
+tap_decap_or
+
+# Now we are ready to run placement
+run_placement
+
+# Incase getting error
+unset ::env(LIB_CTS)
+
+# With placement done we are now ready to run CTS
+run_cts
+
+# Now that CTS is done we can do power distribution network
+gen_pdn
+```
+![s71](https://github.com/user-attachments/assets/402e1f3b-cf3c-4308-a3b8-64fd2b869912)
+
+Screenshot of PDN Def
+
+![s72](https://github.com/user-attachments/assets/3de90620-2445-4bb1-9c9b-9e336ad468cb)
+![s73](https://github.com/user-attachments/assets/34ecfe1b-f905-4bd0-99c5-86667f590cdc)
+
+Command to perform routing
+
+```tcl
+# Check value of 'CURRENT_DEF'
+echo $::env(CURRENT_DEF)
+
+# Check value of 'ROUTING_STRATEGY'
+echo $::env(ROUTING_STRATEGY)
+
+# Command for detailed route using TritonRoute
+run_routing
+```
+![s74](https://github.com/user-attachments/assets/cbec5217-51e6-4445-a811-d70cf6fafc89)
+
+Screenshot of Routed def
+
+![s75](https://github.com/user-attachments/assets/598b2b5d-35a0-46cf-a217-0908e95590d1)
+
+Screenshot of fast route guide present in openlane/designs/picorv32a/runs/20-12_18-37/tmp/routing directory
+
+![s76](https://github.com/user-attachments/assets/a192654d-0b45-460e-8ff6-f1be38334fdf)
+
+picorv32a.synthesis_cts.v file generated in synthesis folder:-
+
+![s77](https://github.com/user-attachments/assets/7961f643-bba1-4bf6-9ab6-4317956f211b)
+
+Commands to be run in OpenLANE flow to do OpenROAD timing analysis with integrated OpenSTA in OpenROAD
+
+```tcl
+# Command to run OpenROAD tool
+openroad
+
+# Reading lef file
+read_lef /openLANE_flow/designs/picorv32a/runs/26-03_08-45/tmp/merged.lef
+
+# Reading def file
+read_def /openLANE_flow/designs/picorv32a/runs/26-03_08-45/results/routing/picorv32a.def
+
+# Creating an OpenROAD database to work with
+write_db pico_route.db
+
+# Loading the created database in OpenROAD
+read_db pico_route.db
+
+# Read netlist post CTS
+read_verilog /openLANE_flow/designs/picorv32a/runs/26-03_08-45/results/synthesis/picorv32a.synthesis_preroute.v
+
+# Read library for design
+read_liberty $::env(LIB_SYNTH_COMPLETE)
+
+# Link design and library
+link_design picorv32a
+
+# Read in the custom sdc we created
+read_sdc /openLANE_flow/designs/picorv32a/src/my_base.sdc
+
+# Setting all cloks as propagated clocks
+set_propagated_clock [all_clocks]
+
+# Read SPEF
+read_spef /openLANE_flow/designs/picorv32a/runs/26-03_08-45/results/routing/picorv32a.spef
+
+# Generating custom timing report
+report_checks -path_delay min_max -fields {slew trans net cap input_pins} -format full_clock_expanded -digits 4
+
+# Exit to OpenLANE flow
+exit
+```
+Screenshots of commands run and timing report generated
+
+
+![s78](https://github.com/user-attachments/assets/6329f719-aba4-45b6-990f-a80674dca7e2)
+![s79](https://github.com/user-attachments/assets/2fe4e190-9f80-4057-8b03-a502574d733d)
+![s80](https://github.com/user-attachments/assets/095f8eff-147d-4773-bfab-890fc762c5e8)
