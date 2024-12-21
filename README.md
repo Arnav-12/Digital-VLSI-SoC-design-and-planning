@@ -959,7 +959,7 @@ echo $::env(CTS_CLK_BUFFER_LIST)
 ![s69](https://github.com/user-attachments/assets/8583492e-4fb9-466d-aea6-8b46d0c80030)
 ![s70](https://github.com/user-attachments/assets/7c87d83a-5873-4354-8455-79a62838baf3)
 
-#Sky130 Day 5- Final steps for RTL2GDS using triton route and openSTA
+# Sky130 Day 5- Final steps for RTL2GDS using triton route and openSTA
 
 ### Routing and Design Rule Check (DRC) in OpenLane
 
