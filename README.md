@@ -552,7 +552,7 @@ After inserting new commands to sky130A.tech file
 
 ![s33](https://github.com/user-attachments/assets/9e7eda47-3cc0-4d4f-aff9-0af54553f7f4)
 
-#Sky 130 Day 4- Pre Layout Timing Analysis and importance of good clock tree
+# Sky 130 Day 4- Pre Layout Timing Analysis and importance of good clock tree
 ## Convert grid info to track info
 The track information file plays a vital role in the physical design process by defining routing paths and layout constraints. It ensures efficient signal routing, prevents design rule violations, and optimizes resource utilization. By converting grid data to track data, it helps reduce congestion and enhances overall design performance. Additionally, it provides essential input for EDA tools to automate placement and routing effectively.
 
@@ -630,7 +630,9 @@ add_lefs -src $lefs
 run_synthesis
 ```
 ![s39](https://github.com/user-attachments/assets/70b4bc15-3482-41a3-a1d5-4650ea8b5dac)
+
 There is a slack 
+
 ![s40](https://github.com/user-attachments/assets/7e291843-221d-4ff0-af2e-f7afd8fcc303)
 ### Improving Timing Analysis in OpenLane
 
@@ -720,12 +722,15 @@ expand
 ### Setup Timing Analysis, Clock Jitter, and Uncertainty
 
 **Setup Timing Analysis**:  
+
 Setup timing analysis ensures that data signals arrive at the flip-flop's input long enough before the clock edge to be reliably captured. It checks if the time between the data signal and the clock signal is sufficient to meet the setup time requirement of the flip-flop, ensuring correct data capture.
 
 **Clock Jitter**:  
+
 Clock jitter refers to small variations or deviations in the timing of the clock signal. These variations can cause fluctuations in the arrival time of the clock edge, potentially leading to setup and hold violations in sequential elements. Proper clock management is crucial to minimize jitter.
 
 **Uncertainty**:  
+
 Uncertainty in timing analysis refers to variations in signal arrival times caused by process variations, temperature fluctuations, or voltage changes. These uncertainties must be accounted for during design to ensure the circuit operates reliably across different operating conditions.
 
 **my_base.sdc** file :-
@@ -825,6 +830,7 @@ report_checks -fields {net cap slew input_pins} -digits 4
 ```
 
 ![s58(slack reduced)](https://github.com/user-attachments/assets/ae15941f-4fda-4f55-850c-ad398678881a)
+
 Commands to perform analysis and optimize timing by replacing with OR gate of drive strength 4
 
 ```tcl
@@ -861,7 +867,9 @@ replace_cell _14506_ sky130_fd_sc_hd__or4_4
 report_checks -fields {net cap slew input_pins} -digits 4
 ```
 Starting value :- **36.63ns**
+
 Present value :- **35.3473**
+
 Reduced around = **36.63ns**-**35.3473** = **1.2827** violations
 
 ![s60(slack reduced)](https://github.com/user-attachments/assets/712824dd-a76d-45f1-89b9-d1ef0281e9e6)
@@ -891,7 +899,7 @@ echo $::env(CTS_CLK_BUFFER_LIST)
 echo $::env(CURRENT_DEF)
 
 # Setting the DEF file as the placement definition
-set ::env(CURRENT_DEF) /openLANE_flow/designs/picorv32a/runs/24-03_10-03/results/placement/picorv32a.placement.def
+set ::env(CURRENT_DEF) /openLANE_flow/designs/picorv32a/runs/18-12_00-40/results/placement/picorv32a.placement.def
 
 # Run Clock Tree Synthesis (CTS) again with the updated settings
 run_cts
@@ -903,10 +911,10 @@ echo $::env(CTS_CLK_BUFFER_LIST)
 openroad
 
 # Read the LEF file for the design
-read_lef /openLANE_flow/designs/picorv32a/runs/24-03_10-03/tmp/merged.lef
+read_lef /openLANE_flow/designs/picorv32a/runs/18-12_00-40/tmp/merged.lef
 
 # Read the DEF file after CTS
-read_def /openLANE_flow/designs/picorv32a/runs/24-03_10-03/results/cts/picorv32a.cts.def
+read_def /openLANE_flow/designs/picorv32a/runs/18-12_00-40/results/cts/picorv32a.cts.def
 
 # Create an OpenROAD database for the design
 write_db pico_cts1.db
@@ -915,7 +923,7 @@ write_db pico_cts1.db
 read_db pico_cts.db
 
 # Read the netlist after CTS
-read_verilog /openLANE_flow/designs/picorv32a/runs/24-03_10-03/results/synthesis/picorv32a.synthesis_cts.v
+read_verilog /openLANE_flow/designs/picorv32a/runs/18-12_00-40/results/synthesis/picorv32a.synthesis_cts.v
 
 # Read the Liberty file for the design
 read_liberty $::env(LIB_SYNTH_COMPLETE)
@@ -964,21 +972,35 @@ echo $::env(CTS_CLK_BUFFER_LIST)
 ### Routing and Design Rule Check (DRC) in OpenLane
 
 **Routing**:  
+
 Routing in OpenLane refers to the process of connecting the various components of the design (cells, pins, and ports) using metal layers to establish the necessary electrical connections. The routing process ensures that signals are properly routed between the cells, and all connectivity requirements are met while adhering to design constraints like wire length, resistance, and capacitance.
 
 **Design Rule Check (DRC)**:  
+
 Design Rule Check (DRC) is a verification process that ensures the design meets the fabrication rules and physical constraints of the manufacturing process. DRC checks for errors such as rule violations (e.g., spacing, width, and overlap of metal layers) that could lead to manufacturing defects or performance issues. It ensures that the design is manufacturable and functions as expected in the real-world environment.
 
 ### Maze Routing and Lee Algorithm
 
 **Maze Routing**:  
+
 Maze routing is a method used in VLSI design to find paths for routing signals between pins on a chip. It is inspired by solving a maze, where the goal is to navigate from a start point (source) to an endpoint (destination) while avoiding obstacles. The algorithm ensures that the routed paths do not overlap or violate design rules.
 
 **Lee Algorithm**:  
+
 The Lee algorithm is a specific maze-routing algorithm that uses breadth-first search (BFS) to find the shortest path between two points on a grid. It works by exploring all possible routes from the source in layers, expanding outward until it reaches the destination. The algorithm guarantees an optimal path without violating any connectivity or design rules, making it useful for interconnect routing in integrated circuit designs.
 
 ![Screenshot 2024-12-21 174307](https://github.com/user-attachments/assets/caba5d36-a4aa-44fb-b878-d34e2d964747)
+
 ## Power Distribution Network and Routing
+
+A **Power Distribution Network (PDN)** is a system designed to deliver electrical power efficiently and reliably from a power source to various components in a circuit or system. It plays a critical role in maintaining stable power levels and minimizing noise and losses in electronic devices.
+
+Key components of a PDN include:
+- **Power Sources:** Batteries, power supplies, or other energy sources.
+- **Voltage Regulators:** Ensure stable and consistent voltage levels.
+- **Planes and Traces:** Conductive paths on PCBs for distributing power.
+- **Decoupling Capacitors:** Minimize voltage fluctuations and provide local energy storage.
+- **Connectors:** Facilitate power transfer between components or modules.
 
 Commands to perform all necessary stages up until now
 ```tcl
@@ -1012,9 +1034,6 @@ tap_decap_or
 # Now we are ready to run placement
 run_placement
 
-# Incase getting error
-unset ::env(LIB_CTS)
-
 # With placement done we are now ready to run CTS
 run_cts
 
@@ -1046,7 +1065,25 @@ Screenshot of Routed def
 
 ![s75](https://github.com/user-attachments/assets/598b2b5d-35a0-46cf-a217-0908e95590d1)
 
-Screenshot of fast route guide present in openlane/designs/picorv32a/runs/20-12_18-37/tmp/routing directory
+### Routing
+
+**Routing** is the process of connecting various components or modules in an integrated circuit (IC) or printed circuit board (PCB) using conductive paths. The goal is to create electrical connections while adhering to design rules and performance requirements.
+
+#### Types of Routing
+
+1. **Fast Route:**
+   - **Purpose:** Quickly generates initial connections between components for feasibility analysis.
+   - **Characteristics:** Focuses on approximate paths, avoiding detailed optimization.
+   - **Use Case:** Early stages of design to estimate routing feasibility and congestion.
+
+2. **Detailed Route:**
+   - **Purpose:** Completes precise connections, ensuring adherence to design rules like spacing, width, and vias.
+   - **Characteristics:** Optimized for performance, reliability, and manufacturability.
+   - **Use Case:** Final stages of design for production-ready layouts.
+
+![d1](https://github.com/user-attachments/assets/0f35a487-25d3-4a56-abbe-78845c67b05f)
+
+Screenshot of fast route guide present in `openlane/designs/picorv32a/runs/20-12_18-37/tmp/routing directory`
 
 ![s76](https://github.com/user-attachments/assets/a192654d-0b45-460e-8ff6-f1be38334fdf)
 
@@ -1061,10 +1098,10 @@ Commands to be run in OpenLANE flow to do OpenROAD timing analysis with integrat
 openroad
 
 # Reading lef file
-read_lef /openLANE_flow/designs/picorv32a/runs/26-03_08-45/tmp/merged.lef
+read_lef /openLANE_flow/designs/picorv32a/runs/20-12_18-37/tmp/merged.lef
 
 # Reading def file
-read_def /openLANE_flow/designs/picorv32a/runs/26-03_08-45/results/routing/picorv32a.def
+read_def /openLANE_flow/designs/picorv32a/runs/20-12_18-37/results/routing/picorv32a.def
 
 # Creating an OpenROAD database to work with
 write_db pico_route.db
@@ -1073,7 +1110,7 @@ write_db pico_route.db
 read_db pico_route.db
 
 # Read netlist post CTS
-read_verilog /openLANE_flow/designs/picorv32a/runs/26-03_08-45/results/synthesis/picorv32a.synthesis_preroute.v
+read_verilog /openLANE_flow/designs/picorv32a/runs/20-12_18-37/results/synthesis/picorv32a.synthesis_preroute.v
 
 # Read library for design
 read_liberty $::env(LIB_SYNTH_COMPLETE)
@@ -1088,7 +1125,7 @@ read_sdc /openLANE_flow/designs/picorv32a/src/my_base.sdc
 set_propagated_clock [all_clocks]
 
 # Read SPEF
-read_spef /openLANE_flow/designs/picorv32a/runs/26-03_08-45/results/routing/picorv32a.spef
+read_spef /openLANE_flow/designs/picorv32a/runs/20-12_18-37/results/routing/picorv32a.spef
 
 # Generating custom timing report
 report_checks -path_delay min_max -fields {slew trans net cap input_pins} -format full_clock_expanded -digits 4
@@ -1097,7 +1134,6 @@ report_checks -path_delay min_max -fields {slew trans net cap input_pins} -forma
 exit
 ```
 Screenshots of commands run and timing report generated
-
 
 ![s78](https://github.com/user-attachments/assets/6329f719-aba4-45b6-990f-a80674dca7e2)
 ![s79](https://github.com/user-attachments/assets/2fe4e190-9f80-4057-8b03-a502574d733d)
