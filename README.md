@@ -9,7 +9,7 @@ Measuring typically around **7mm x 7mm** with a height of about **0.9mm**, the Q
 
 Unlike traditional leaded packages, the QFN-48 does not have leads extending from its sides, which helps to **minimize its footprint** and **improve electrical performance**.
 
-![S1](https://github.com/Arnav-12/VLSI-SoC-Design/blob/main/Screenshots%20vsd/S1.png)
+![S1](https://github.com/user-attachments/assets/40f193ee-2b64-48c1-ae71-e7ac956da23d)
 
 The **pads** on a QFN-48 package play a crucial role in establishing electrical connections between the chip and the PCB. These pads are located on the **bottom of the package** and are usually made of **copper**, plated with a thin layer of **tin** or **gold** to ensure reliable soldering. 
 
@@ -19,7 +19,7 @@ The pads are divided into:
 
 This design helps manage heat more effectively, which is critical for maintaining the **performance** and **longevity** of the chip.
 
-![S2](https://github.com/Arnav-12/VLSI-SoC-Design/blob/main/Screenshots%20vsd/S2.png)
+![S2](https://github.com/user-attachments/assets/b90c6ace-0e6f-4527-a6e9-6bea03b01752)
 
 At the **heart of the QFN-48 package** lies the **core**, the central part of the semiconductor die where the main circuitry is located. The core contains **active and passive components**, including transistors, resistors, capacitors, and interconnects, which collectively perform the chip's intended functions. The **core's design** is crucial for the chip's performance, as it dictates how efficiently the chip processes signals and performs computations.
 
@@ -45,12 +45,12 @@ By incorporating **IPs**, designers can **speed up development**, **reduce costs
 
 Its **open nature** means that anyone can **use**, **modify**, and **extend** the ISA without licensing fees, fostering **innovation** and **collaboration** across the industry.
 
-![S3](https://github.com/Arnav-12/VLSI-SoC-Design/blob/main/S3.png)
+![S3](https://github.com/user-attachments/assets/80cc0481-cfbc-45a7-9a90-807d41f2a1b5)
 
 ## From Software Application to Hardware
 The **below diagrams** show how **application software**, **system software**, and **hardware** interact.
 
-![S4](https://github.com/Arnav-12/VLSI-SoC-Design/blob/main/S4.png)
+![S4](https://github.com/user-attachments/assets/0094e9a2-d1bb-4bc5-b4dd-fe44cb54f4a9)
 
 ## Digital ASIC Design
 
@@ -60,7 +60,7 @@ The journey from **Electronic Design Automation (EDA)** tools to an **Applicatio
 - **Synthesis tools**, such as **Synopsys Design Compiler**, convert high-level **RTL (Register Transfer Level)** code into a gate-level netlist.
 - Finally, **Place and Route (P&R)** tools, like **Cadence Innovus** or **Synopsys IC Compiler**, are used to physically layout the circuit on the chip, ensuring **optimal performance** and **area efficiency**.
 
-![S5](https://github.com/Arnav-12/VLSI-SoC-Design/blob/main/S5.png)
+![S5](https://github.com/user-attachments/assets/3ce1e45b-d99d-49f0-bef4-956bd3bbb779)
 
 ## Simplified RTL2GDS flow
 
@@ -73,11 +73,11 @@ The **RTL2GDS** flow, transforming a high-level **Register Transfer Level (RTL)*
 5. **Layout Verification**: The completed layout is verified against the original design specifications.
 6. **Export to GDSII**: The final design is exported in the **GDSII format**, ready for fabrication.
    
-![S6](https://github.com/Arnav-12/VLSI-SoC-Design/blob/main/S6.png)
+![S6](https://github.com/user-attachments/assets/b66ce02d-a230-443b-90a8-50cfe927d487)
 
 ## Strive Chipsets
 
-![S7](https://github.com/Arnav-12/VLSI-SoC-Design/blob/main/S7.png)
+![S7](https://github.com/user-attachments/assets/8a865058-ab16-4c02-9425-90c66b1eb830)
 
 ## OpenLANE Design Flow
 
@@ -87,7 +87,7 @@ The following YouTube video is useful for understanding OpenLane and its working
 
 [Watch the video on YouTube](https://www.youtube.com/live/Vhyv0eq_mLU?si=xflMkyOfawGhRuRM)
 
-![S8](https://github.com/Arnav-12/VLSI-SoC-Design/blob/main/S8.png)
+![S8](https://github.com/user-attachments/assets/051ec90a-09b0-48d5-85f5-c4377fe4a92c)
 
 # Day-1 Labs
 ## Basic Linux Commands
